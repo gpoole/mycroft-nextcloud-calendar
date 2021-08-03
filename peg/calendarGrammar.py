@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # CAVEAT UTILITOR
 #
@@ -9,14 +10,15 @@
 # Any changes you make to it will be overwritten the next time
 # the file is generated.
 
-from __future__ import annotations
+
+from __future__ import print_function, division, absolute_import, unicode_literals
 
 import sys
 
 from tatsu.buffering import Buffer
 from tatsu.parsing import Parser
-from tatsu.parsing import tatsumasu
-from tatsu.parsing import leftrec, nomemo, isname # noqa
+from tatsu.parsing import tatsumasu, leftrec, nomemo
+from tatsu.parsing import leftrec, nomemo  # noqa
 from tatsu.util import re, generic_main  # noqa
 
 
@@ -35,7 +37,7 @@ class CalendarGrammarBuffer(Buffer):
         namechars='',
         **kwargs
     ):
-        super().__init__(
+        super(CalendarGrammarBuffer, self).__init__(
             text,
             whitespace=whitespace,
             nameguard=nameguard,
@@ -59,12 +61,12 @@ class CalendarGrammarParser(Parser):
         parseinfo=True,
         keywords=None,
         namechars='',
-        tokenizercls=CalendarGrammarBuffer,
+        buffer_class=CalendarGrammarBuffer,
         **kwargs
     ):
         if keywords is None:
             keywords = KEYWORDS
-        super().__init__(
+        super(CalendarGrammarParser, self).__init__(
             whitespace=whitespace,
             nameguard=nameguard,
             comments_re=comments_re,
@@ -74,7 +76,7 @@ class CalendarGrammarParser(Parser):
             parseinfo=parseinfo,
             keywords=keywords,
             namechars=namechars,
-            tokenizercls=tokenizercls,
+            buffer_class=buffer_class,
             **kwargs
         )
 
@@ -100,12 +102,8 @@ class CalendarGrammarParser(Parser):
                 self.name_last_node('calendar_owner')
                 self._timeframe_()
                 self.name_last_node('time_frame')
-            self._error(
-                'expecting one of: '
-                "'what' 'how' 'tell' 'add' 'put' 'create'"
-                "'schedule' <init>"
-            )
-        self._define(
+            self._error('no available options')
+        self.ast._define(
             ['calendar_owner', 'time_frame'],
             []
         )
@@ -127,10 +125,7 @@ class CalendarGrammarParser(Parser):
                             self._token('do')
                         with self._option():
                             self._token('are')
-                        self._error(
-                            'expecting one of: '
-                            "'is' 'am' 'does' 'do' 'are'"
-                        )
+                        self._error('no available options')
                 with self._optional():
                     self._token('on')
             with self._option():
@@ -142,10 +137,7 @@ class CalendarGrammarParser(Parser):
                             self._token('is')
                         with self._option():
                             self._token('am')
-                        self._error(
-                            'expecting one of: '
-                            "'is' 'am'"
-                        )
+                        self._error('no available options')
             with self._option():
                 self._token('tell')
                 self._token('me')
@@ -162,20 +154,14 @@ class CalendarGrammarParser(Parser):
                             self._token('create')
                         with self._option():
                             self._token('schedule')
-                        self._error(
-                            'expecting one of: '
-                            "'add' 'put' 'create' 'schedule'"
-                        )
+                        self._error('no available options')
                 with self._optional():
                     with self._choice():
                         with self._option():
                             self._token('a')
                         with self._option():
                             self._token('an')
-                        self._error(
-                            'expecting one of: '
-                            "'a' 'an'"
-                        )
+                        self._error('no available options')
                 with self._group():
                     with self._choice():
                         with self._option():
@@ -184,20 +170,14 @@ class CalendarGrammarParser(Parser):
                             self._token('appointment')
                         with self._option():
                             self._token('meeting')
-                        self._error(
-                            'expecting one of: '
-                            "'event' 'appointment' 'meeting'"
-                        )
+                        self._error('no available options')
                 with self._group():
                     with self._choice():
                         with self._option():
                             self._token('to')
                         with self._option():
                             self._token('on')
-                        self._error(
-                            'expecting one of: '
-                            "'to' 'on'"
-                        )
+                        self._error('no available options')
             with self._option():
                 with self._group():
                     with self._choice():
@@ -209,10 +189,7 @@ class CalendarGrammarParser(Parser):
                             self._token('create')
                         with self._option():
                             self._token('schedule')
-                        self._error(
-                            'expecting one of: '
-                            "'add' 'put' 'create' 'schedule'"
-                        )
+                        self._error('no available options')
                 self._token('something')
                 with self._group():
                     with self._choice():
@@ -220,15 +197,8 @@ class CalendarGrammarParser(Parser):
                             self._token('to')
                         with self._option():
                             self._token('on')
-                        self._error(
-                            'expecting one of: '
-                            "'to' 'on'"
-                        )
-            self._error(
-                'expecting one of: '
-                "'what' 'how' 'tell' 'add' 'put' 'create'"
-                "'schedule'"
-            )
+                        self._error('no available options')
+            self._error('no available options')
 
     @tatsumasu()
     def _ownership_(self):  # noqa
@@ -237,10 +207,7 @@ class CalendarGrammarParser(Parser):
                 self._token('me')
             with self._option():
                 self._token('i')
-            self._error(
-                'expecting one of: '
-                "'me' 'i'"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _day_of_week_(self):  # noqa
@@ -259,11 +226,7 @@ class CalendarGrammarParser(Parser):
                 self._token('friday')
             with self._option():
                 self._token('saturday')
-            self._error(
-                'expecting one of: '
-                "'sunday' 'monday' 'tuesday' 'wednesday'"
-                "'thursday' 'friday' 'saturday'"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _month_(self):  # noqa
@@ -292,12 +255,7 @@ class CalendarGrammarParser(Parser):
                 self._token('november')
             with self._option():
                 self._token('december')
-            self._error(
-                'expecting one of: '
-                "'january' 'february' 'march' 'april'"
-                "'may' 'june' 'july' 'august' 'september'"
-                "'october' 'november' 'december'"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _number_(self):  # noqa
@@ -316,10 +274,7 @@ class CalendarGrammarParser(Parser):
                     self._token('rd')
                 with self._option():
                     self._token('th')
-                self._error(
-                    'expecting one of: '
-                    "'st' 'nd' 'rd' 'th'"
-                )
+                self._error('no available options')
 
     @tatsumasu()
     def _time_(self):  # noqa
@@ -346,17 +301,7 @@ class CalendarGrammarParser(Parser):
                 self._month_()
                 with self._optional():
                     self._date_()
-            self._error(
-                'expecting one of: '
-                "'day' 'weekend' 'week' 'afternoon'"
-                "'evening' 'morning' 'tomorrow' 'today'"
-                "'sunday' 'monday' 'tuesday' 'wednesday'"
-                "'thursday' 'friday' 'saturday'"
-                "<day_of_week> 'january' 'february'"
-                "'march' 'april' 'may' 'june' 'july'"
-                "'august' 'september' 'october'"
-                "'november' 'december' <month>"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _calendar_(self):  # noqa
@@ -381,19 +326,7 @@ class CalendarGrammarParser(Parser):
                 self._token('going')
             with self._option():
                 self._time_()
-            self._error(
-                'expecting one of: '
-                "'calendar' 'agenda' 'schedule' 'planner'"
-                "'events' 'up' 'doing' 'have' 'day'"
-                "'weekend' 'week' 'afternoon' 'evening'"
-                "'morning' 'tomorrow' 'today' 'sunday'"
-                "'monday' 'tuesday' 'wednesday'"
-                "'thursday' 'friday' 'saturday'"
-                "<day_of_week> 'january' 'february'"
-                "'march' 'april' 'may' 'june' 'july'"
-                "'august' 'september' 'october'"
-                "'november' 'december' <month> <time>"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _relative_modifier_(self):  # noqa
@@ -402,10 +335,7 @@ class CalendarGrammarParser(Parser):
                 self._token('next')
             with self._option():
                 self._token('this')
-            self._error(
-                'expecting one of: '
-                "'next' 'this'"
-            )
+            self._error('no available options')
 
     @tatsumasu()
     def _timeframe_(self):  # noqa
@@ -461,12 +391,7 @@ def main(filename, start=None, **kwargs):
         with open(filename) as f:
             text = f.read()
     parser = CalendarGrammarParser()
-    return parser.parse(
-        text,
-        rule_name=start,
-        filename=filename,
-        **kwargs
-    )
+    return parser.parse(text, rule_name=start, filename=filename, **kwargs)
 
 
 if __name__ == '__main__':
@@ -474,5 +399,9 @@ if __name__ == '__main__':
     from tatsu.util import asjson
 
     ast = generic_main(main, CalendarGrammarParser, name='CalendarGrammar')
-    data = asjson(ast)
-    print(json.dumps(data, indent=2))
+    print('AST:')
+    print(ast)
+    print()
+    print('JSON:')
+    print(json.dumps(asjson(ast), indent=2))
+    print()
