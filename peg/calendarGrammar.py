@@ -93,7 +93,12 @@ class CalendarGrammarParser(Parser):
                 self.name_last_node('calendar_owner')
                 self._calendar_()
                 with self._optional():
-                    self._token('on')
+                    with self._choice():
+                        with self._option():
+                            self._token('on')
+                        with self._option():
+                            self._token('for')
+                        self._error('no available options')
                 self._timeframe_()
                 self.name_last_node('time_frame')
             with self._option():

@@ -3,7 +3,7 @@
 start = expr ;
 
 expr = 
-    | init calendar_owner:ownership calendar [ 'on' ] time_frame:timeframe
+    | init calendar_owner:ownership calendar [ 'on'|'for' ] time_frame:timeframe
     | init calendar_owner:ownership time_frame:timeframe
     ;
 
