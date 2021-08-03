@@ -207,6 +207,8 @@ class CalendarGrammarParser(Parser):
                 self._token('me')
             with self._option():
                 self._token('i')
+            with self._option():
+                self._token('my')
             self._error('no available options')
 
     @tatsumasu()
