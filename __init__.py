@@ -31,13 +31,9 @@ class NextcloudCalendarSkill(MycroftSkill):
         super(NextcloudCalendarSkill, self).__init__(name="NextcloudCalendarSkill")
         
         # dictionary to convert calendar names to corresponding possessives
-        self.calendarToName = {'madison-1':"madison's",'personal':'your','milo':"milo's"}
+        self.calendarToName = {'personal':'your'}
         # dictionary to convert possible possessives to corresponding calendar names
-        self.nameToCalendar = {"madison":'madison-1', "madison's":'madison-1',
-                          "milo's":'milo', "milo":"milo",
-                          "my lowe":'milo', "my lowe's":'milo',
-                          "my low":"milo", "my low's":"milo",
-                          "me":"personal", "my":"personal", "i":"personal",
+        self.nameToCalendar = {"me":"personal", "my":"personal", "i":"personal",
                           "mine":"personal", "myself":"personal", "my own": "personal",
                           "9": "personal", "mind": "personal"}
         # init custom timeframe and calendar owner parser
