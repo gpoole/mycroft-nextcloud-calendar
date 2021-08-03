@@ -20,10 +20,6 @@ ownership
     =
     | 'me'
     | 'i'
-    | 'my' [ "lowe" | "low" ]
-    | "madison"
-    | "milo"
-    | "the" [ "family" ]
     ;
     
 day_of_week
